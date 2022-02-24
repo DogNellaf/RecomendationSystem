@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class Model
 {
-    public int Id { get; private set; }
+    public int Id { get; protected set; }
+    public Model()
+    {
+
+    }
+
     public Model(int id)
     {
         Id = id;

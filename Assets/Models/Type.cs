@@ -7,4 +7,13 @@ public class Type : Model
         this.Name = Name;
         this.Description = Description;
     }
+    public Type(object[] items)
+    {
+        Id = (int)items[0];
+        Name = (string)items[1];
+        if (items[2] != null)
+        {
+            Description = (string)items[2];
+        }
+    }
 }
