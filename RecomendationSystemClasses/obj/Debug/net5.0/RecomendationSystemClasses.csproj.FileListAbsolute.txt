@@ -1,0 +1,12 @@
+C:\Users\Данилидзе\source\repos\RecomendationSystemClasses\bin\Debug\net5.0\RecomendationSystemClasses.deps.json
+C:\Users\Данилидзе\source\repos\RecomendationSystemClasses\bin\Debug\net5.0\RecomendationSystemClasses.dll
+C:\Users\Данилидзе\source\repos\RecomendationSystemClasses\bin\Debug\net5.0\ref\RecomendationSystemClasses.dll
+C:\Users\Данилидзе\source\repos\RecomendationSystemClasses\bin\Debug\net5.0\RecomendationSystemClasses.pdb
+C:\Users\Данилидзе\source\repos\RecomendationSystemClasses\obj\Debug\net5.0\RecomendationSystemClasses.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Данилидзе\source\repos\RecomendationSystemClasses\obj\Debug\net5.0\RecomendationSystemClasses.AssemblyInfoInputs.cache
+C:\Users\Данилидзе\source\repos\RecomendationSystemClasses\obj\Debug\net5.0\RecomendationSystemClasses.AssemblyInfo.cs
+C:\Users\Данилидзе\source\repos\RecomendationSystemClasses\obj\Debug\net5.0\RecomendationSystemClasses.csproj.CoreCompileInputs.cache
+C:\Users\Данилидзе\source\repos\RecomendationSystemClasses\obj\Debug\net5.0\RecomendationSystemClasses.dll
+C:\Users\Данилидзе\source\repos\RecomendationSystemClasses\obj\Debug\net5.0\ref\RecomendationSystemClasses.dll
+C:\Users\Данилидзе\source\repos\RecomendationSystemClasses\obj\Debug\net5.0\RecomendationSystemClasses.pdb
+C:\Users\Данилидзе\source\repos\RecomendationSystemClasses\obj\Debug\net5.0\RecomendationSystemClasses.csproj.AssemblyReference.cache
