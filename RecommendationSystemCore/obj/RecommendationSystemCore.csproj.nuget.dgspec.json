@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Данилидзе\\source\\repos\\RecommendationSystemCore\\RecommendationSystemCore.csproj": {}
+    "G:\\Projects\\RecomendationSystem\\RecommendationSystemCore\\RecommendationSystemCore.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Данилидзе\\source\\repos\\RecommendationSystemCore\\RecommendationSystemCore.csproj": {
+    "G:\\Projects\\RecomendationSystem\\RecommendationSystemCore\\RecommendationSystemCore.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Данилидзе\\source\\repos\\RecommendationSystemCore\\RecommendationSystemCore.csproj",
+        "projectUniqueName": "G:\\Projects\\RecomendationSystem\\RecommendationSystemCore\\RecommendationSystemCore.csproj",
         "projectName": "RecommendationSystemCore",
-        "projectPath": "C:\\Users\\Данилидзе\\source\\repos\\RecommendationSystemCore\\RecommendationSystemCore.csproj",
+        "projectPath": "G:\\Projects\\RecomendationSystem\\RecommendationSystemCore\\RecommendationSystemCore.csproj",
         "packagesPath": "C:\\Users\\Данилидзе\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Данилидзе\\source\\repos\\RecommendationSystemCore\\obj\\",
+        "outputPath": "G:\\Projects\\RecomendationSystem\\RecommendationSystemCore\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
