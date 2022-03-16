@@ -1,11 +1,8 @@
-using Newtonsoft.Json;
 using RecomendationSystemClasses;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
-using UnityEngine;
-//using RecomendationSystemClasses;
 
 
 public static class Database
@@ -16,24 +13,20 @@ public static class Database
 
     public static List<Item> GetItemsByType(int typeId)
     {
-        string text = GetRequest($"itemsbytype/?type_id={typeId}").Replace("[", "").Replace("]", "");
-        string[] elements = text.Split('{');
+        string text = GetRequest($"itemsbytype/?type_id={typeId}");
+        var elements = GetDictionaryByJson(text);
         List<Item> items = new List<Item>();
-        for (int i = 1; i < elements.Length; i++)
+        foreach (var element in elements)
         {
-            var raw = elements[i].Replace("{", "").Replace("}", "").Split(',');
-
-            //название
-            string name = raw[0].Split(' ')[1].Trim('\"');
-            string? description = raw[1].Split(' ')[1].Trim('\"');
-
-            if (description == "null")
-                description = null;
-
-            int id = int.Parse(raw[2].Split(' ')[1]);
-
-            //Item item = new Item(id, name, description);
-            //items.Add(item);
+            Item item = new Item(new object[]
+            {
+                int.Parse(element["Id"]),
+                element["Name"],
+                element["Photo"],
+                element["Description"],
+                int.Parse(element["TypeId"])
+            });
+            items.Add(item);
         }
 
         return items;
@@ -64,6 +57,72 @@ public static class Database
         return types;
     }
 
+    private static List<Dictionary<string, string>> GetDictionaryByJson(string json)
+    {
+        var result = new List<Dictionary<string, string>>();
+        var clearedJson = json.Replace("[", "").Replace("]", "");
+        var rawItems = clearedJson.Replace("{","").Split('}');
+        foreach (var item in rawItems)
+        {
+            if (item != string.Empty)
+            {
+                var itemValues = new Dictionary<string, string>();
+                string key = string.Empty;
+                for (int i = 0; i < item.Length; i++)
+                {
+                    var currentChar = item[i];
+                    if (currentChar == '\"' && key == string.Empty)
+                    {
+                        var endIndex = item.IndexOf('\"', i + 1);
+                        key = item.Substring(i + 1, endIndex-1-i);
+                        
+                        if (i < item.Length)
+                        {
+                            if (item[endIndex + 3] != '\"')
+                            {
+                                i = endIndex + 2;
+                                continue;
+                            }
+                        }
+
+                        i = endIndex + 3;
+                    }
+                    else if (key != string.Empty)
+                    {
+                        var endIndex = item.IndexOf("\",", i);
+
+                        if (endIndex < 0)
+                        {
+                            endIndex = item.IndexOf(",\"", i);
+                        }
+
+                        if (endIndex < 0)
+                        {
+                            endIndex = item.IndexOf("\"", i);
+                        }
+
+                        if (endIndex < 0)
+                        {
+                            endIndex = item.IndexOf("}", i);
+                        }
+
+                        if (endIndex < 0)
+                        {
+                            endIndex = item.Length;
+                        }
+
+                        string value = item.Substring(i, endIndex - i);
+                        itemValues.Add(key, value);
+                        key = string.Empty;
+                        i = endIndex;
+                    }
+                }
+                result.Add(itemValues);
+            }
+        }
+        return result;
+    }
+
     private static string GetRequest(string path)
     {
         HttpWebRequest proxy_request = (HttpWebRequest)WebRequest.Create($"{Host}/{path}");
@@ -77,7 +136,7 @@ public static class Database
             text = sr.ReadToEnd();
 
         text = text.Trim(new char[] { '"' });
-        Debug.Log(text);
+        //Debug.Log(text);
         return text;
     }
 }

@@ -18,6 +18,9 @@ public class MenuInteractions : MonoBehaviour
     //предотвращение дабл-клика
     private bool onButtonClicked = false;
 
+    //закрыть панель
+    public void ClosePanel() => OnLeftButtonClick();
+
     //открыть\закрыть менюшки
     public void OnLeftButtonClick()
     {
