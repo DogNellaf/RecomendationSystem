@@ -1,4 +1,6 @@
-﻿namespace RecomendationSystemClasses
+﻿using System.Text.Json.Serialization;
+
+namespace RecomendationSystemClasses
 {
     //продукт в базе
     public class Item : Model
@@ -15,7 +17,13 @@
         //тип продукта
         public int TypeId { get; private set; }
 
+        public Item()
+        {
+
+        }
+
         //конструктор со всеми основными аргументами
+        [JsonConstructor]
         public Item(int Id, string Name, string Photo, string Description, int TypeId) : base(Id)
         {
             this.Name = Name;

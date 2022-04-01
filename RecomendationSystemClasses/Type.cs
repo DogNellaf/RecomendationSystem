@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 
 namespace RecomendationSystemClasses
 {
@@ -11,7 +12,13 @@ namespace RecomendationSystemClasses
         //описание ипа
         public string Description { get; private set; }
 
+        public Type()
+        {
+
+        }
+
         //конструктор со всеми основными аргументами
+        [JsonConstructor]
         public Type(int Id, string Name, string Description) : base(Id)
         {
             this.Name = Name;

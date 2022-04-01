@@ -1,4 +1,6 @@
-﻿namespace RecomendationSystemClasses
+﻿using System.Text.Json.Serialization;
+
+namespace RecomendationSystemClasses
 {
     //пользователь в системе
     public class User : Model
@@ -12,7 +14,13 @@
         //мобильный телефон пользователя
         public string Mobile { get; private set; }
 
+        public User()
+        {
+
+        }
+
         //конструктор со всеми основными аргументами
+        [JsonConstructor]
         public User(int Id, string Username, string Password, string Mobile) : base(Id)
         {
             this.Username = Username;

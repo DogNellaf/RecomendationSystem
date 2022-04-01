@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 
 namespace RecomendationSystemClasses
 {
@@ -6,28 +7,35 @@ namespace RecomendationSystemClasses
     public class Review : Model
     {
         //дата написания
-        public DateTime Date { get; private set; }
+        public string Date { get; set; }
 
         //автор отзыва
-        public int AuthorId { get; private set; }
+        public int AuthorId { get; set; }
 
         //оценка продукта
-        public int Rating { get; private set; }
+        public int Rating { get; set; }
 
         //текст отзыва
-        public string Text { get; private set; }
+        public string Text { get; set; }
 
         //продукт, к которому относится отзыв
-        public int ItemId { get; private set; }
+        public int ItemId { get; set; }
+
+        public Review()
+        {
+
+        }
 
         //конструктор со всеми основными аргументами
-        public Review(int id, DateTime date, int userId, int rating, string text, int itemId) : base(id)
+        [JsonConstructor]
+        public Review(int Id, string Date, int AuthorId, int Rating, string Text, int ItemId)
         {
-            this.Date = date;
-            this.AuthorId = userId;
-            this.Rating = rating;
-            this.Text = text;
-            this.ItemId = itemId;
+            this.Id = Id;
+            this.Date = Date;
+            this.AuthorId = AuthorId; 
+            this.Rating = Rating;
+            this.Text = Text;
+            this.ItemId = ItemId;
         }
 
         //конструктор в случае, если передают массив объектов
@@ -35,7 +43,7 @@ namespace RecomendationSystemClasses
         {
             //преобразуем объекты и приравниваем
             Id = (int)items[0];
-            Date = (DateTime)items[1];
+            Date = (string)items[1];
             AuthorId = (int)items[2];
             Rating = (int)items[3];
             Text = (string)items[4];
