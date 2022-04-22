@@ -115,7 +115,6 @@ G:\Projects\RecomendationSystem\RecommendationSystemCore\obj\Debug\net5.0\Recomm
 G:\Projects\RecomendationSystem\RecommendationSystemCore\obj\Debug\net5.0\RecommendationSystemCore.TagHelpers.output.cache
 G:\Projects\RecomendationSystem\RecommendationSystemCore\obj\Debug\net5.0\RecommendationSystemCore.RazorCoreGenerate.cache
 G:\Projects\RecomendationSystem\RecommendationSystemCore\obj\Debug\net5.0\Razor\Views\Api\Index.cshtml.g.cs
-G:\Projects\RecomendationSystem\RecommendationSystemCore\obj\Debug\net5.0\Razor\Views\Shared\Error.cshtml.g.cs
 G:\Projects\RecomendationSystem\RecommendationSystemCore\obj\Debug\net5.0\Razor\Views\Shared\_Layout.cshtml.g.cs
 G:\Projects\RecomendationSystem\RecommendationSystemCore\obj\Debug\net5.0\Razor\Views\Shared\_ValidationScriptsPartial.cshtml.g.cs
 G:\Projects\RecomendationSystem\RecommendationSystemCore\obj\Debug\net5.0\Razor\Views\_ViewImports.cshtml.g.cs
@@ -128,3 +127,4 @@ G:\Projects\RecomendationSystem\RecommendationSystemCore\obj\Debug\net5.0\ref\Re
 G:\Projects\RecomendationSystem\RecommendationSystemCore\obj\Debug\net5.0\RecommendationSystemCore.pdb
 G:\Projects\RecomendationSystem\RecommendationSystemCore\obj\Debug\net5.0\RecommendationSystemCore.genruntimeconfig.cache
 G:\Projects\RecomendationSystem\RecommendationSystemCore\obj\Debug\net5.0\RecommendationSystemCore.csproj.CopyComplete
+G:\Projects\RecomendationSystem\RecommendationSystemCore\bin\Debug\net5.0\Newtonsoft.Json.dll

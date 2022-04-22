@@ -1,24 +1,34 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RecomendationSystemClasses;
-using RecommendationSystemCore.Helpers;
+using RecommendationSystem.Models;
+using RecommendationSystem.Core.Helpers;
 using System.Net;
+using Newtonsoft.Json;
 
-namespace RecommendationSystemCore.Controllers
+namespace RecommendationSystem.Controllers
 {
     // API контроллер 
     public class ApiController : Controller
     {
+
+        #region API Methods
+
         [HttpGet] // главная страница
         public IActionResult Index()
         {
+            // возвращаем статус ОК
             Response.StatusCode = (int)HttpStatusCode.OK;
-            return Json(new { Message = "Its starting page. Use GET/POST requests to use dat" });
+
+            // выводим стартовое сообщение
+            return Json(new { Message = "Its starting page. Use GET/POST requests to use data" });
         }
 
         [HttpGet] // любой нестандартный путь + ошибки, путь /api/error
         public IActionResult Error()
         {
+            // возвращаем статус Плохой запрос
             Response.StatusCode = (int)HttpStatusCode.BadRequest;
+
+            // сообщаем, что произошла ошибка
             return Json(new { ErrorMessage = "Bad Request" });
         }
 
@@ -37,7 +47,16 @@ namespace RecommendationSystemCore.Controllers
         [HttpGet] // получить список всех отзывов, путь /api/reviews
         public IActionResult Reviews() => Ok<Review>();
 
+        [HttpGet] // получить список отзывов по продукту /api/reviewsbyitem/?item_id=<type_id>
+        public IActionResult ReviewsByItem(string item_id) => Ok<Review>($"[item_id] = {item_id}");
+
+        #endregion
+
+        #region Utils
+
         // вспомогательный метод для сокращения
         private ActionResult Ok<T>(string where = "") where T: Model => Ok(Database.GetJson<T>(where));
+
+        #endregion
     }
 }

@@ -1,12 +1,11 @@
 ﻿using Microsoft.Data.SqlClient;
-using RecomendationSystemClasses;
+using Newtonsoft.Json;
+using RecommendationSystem.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Text.Encodings.Web;
-using System.Text.Json;
 
-namespace RecommendationSystemCore.Helpers
+namespace RecommendationSystem.Core.Helpers
 {
     // класс работы с базой данных
     public static class Database
@@ -17,25 +16,11 @@ namespace RecommendationSystemCore.Helpers
         // универсальная функция для получения json по объекту Т (любой наследник класса Model)
         internal static string GetJson<T>(string where = "") where T: Model
         {
-            // включаем поддержку небезопасных символов (кириллицы)
-            JsonSerializerOptions options = new()
-            {
-                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
-                WriteIndented = true
-            };
-
             // получает объекты
             List<T> objects = GetObject<T>(where);
 
-            // конвертируем в json строку по настройкам выше
-            string json = JsonSerializer.Serialize(objects, options);
-
-            // удаляем лишние символы
-            json = json.Replace("\r\n", "");
-            json = json.Replace("  ", "");
-
-            // возвращаем результат
-            return json;
+            // конвертируем в JSON и отправляем пользователю
+            return JsonConvert.SerializeObject(objects);
         }
 
         //функция получения объектов из базы, где Т - любой наследник класса Model

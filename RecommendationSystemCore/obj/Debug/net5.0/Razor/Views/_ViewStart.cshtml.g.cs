@@ -14,20 +14,20 @@ namespace AspNetCore
     using Microsoft.AspNetCore.Mvc.ViewFeatures;
 #nullable restore
 #line 1 "G:\Projects\RecomendationSystem\RecommendationSystemCore\Views\_ViewImports.cshtml"
-using RecommendationSystemCore;
+using RecommendationSystem;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
 #line 2 "G:\Projects\RecomendationSystem\RecommendationSystemCore\Views\_ViewImports.cshtml"
-using RecommendationSystemCore.Models;
+using RecommendationSystem.Models;
 
 #line default
 #line hidden
 #nullable disable
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"7091c65830b0329e613be026ede8a57552863778", @"/Views/_ViewStart.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"68157f872ff0377162562521afb22b489fae4d94", @"/Views/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"a8fc971b460e713ed4a855b92d67c96f4a1f9855", @"/Views/_ViewImports.cshtml")]
     public class Views__ViewStart : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<dynamic>
     {
         #pragma warning disable 1998

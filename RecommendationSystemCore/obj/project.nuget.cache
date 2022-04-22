@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "nIBephlE9T6GP6tltyBL5X+Glh+Vns5GkuybVM+fQIFNtnoZEJiV+Mz9eUk9wPhNrYTI8Ky0w28KG6D/mW5OFw==",
+  "dgSpecHash": "XuWlnKNPgBi7LG8v+Vcixk1IGUx6qZ3UGIC9orMteC/uIkkG/MDzvIRO+otWRtX4537Gb6Ztf36QvcP/1k36+A==",
   "success": true,
   "projectFilePath": "G:\\Projects\\RecomendationSystem\\RecommendationSystemCore\\RecommendationSystemCore.csproj",
   "expectedPackageFiles": [
@@ -21,6 +21,7 @@
     "C:\\Users\\Данилидзе\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
     "C:\\Users\\Данилидзе\\.nuget\\packages\\microsoft.win32.registry\\5.0.0\\microsoft.win32.registry.5.0.0.nupkg.sha512",
     "C:\\Users\\Данилидзе\\.nuget\\packages\\microsoft.win32.systemevents\\5.0.0\\microsoft.win32.systemevents.5.0.0.nupkg.sha512",
+    "C:\\Users\\Данилидзе\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
     "C:\\Users\\Данилидзе\\.nuget\\packages\\system.buffers\\4.5.1\\system.buffers.4.5.1.nupkg.sha512",
     "C:\\Users\\Данилидзе\\.nuget\\packages\\system.configuration.configurationmanager\\5.0.0\\system.configuration.configurationmanager.5.0.0.nupkg.sha512",
     "C:\\Users\\Данилидзе\\.nuget\\packages\\system.diagnostics.diagnosticsource\\5.0.0\\system.diagnostics.diagnosticsource.5.0.0.nupkg.sha512",
