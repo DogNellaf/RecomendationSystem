@@ -1,6 +1,5 @@
 using RecommendationSystem.Models;
 using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,14 +7,14 @@ using UnityEngine.UI;
 public class ReviewPageController : MonoBehaviour
 {
     [SerializeField] private string title = "Отзывы к товару";
-    [SerializeField] private Database database;
     [SerializeField] private GameObject reviewPanel;
     [SerializeField] private GameObject panel;
     [SerializeField] private Sprite star;
+    [SerializeField] private Vector3 scale = new Vector3(1, 1, 1);
     public Item Item { get; set; }
     void Start()
     {
-        database = GameObject.Find("Database").GetComponent<Database>();
+        var database = Database.Find();
         SetText("Title", $"{title} {Item.Name}", transform);
         var reviews = database.GetReviewsByItem(Item);
         var position = 600;
@@ -24,9 +23,9 @@ public class ReviewPageController : MonoBehaviour
             GameObject frame = Instantiate(reviewPanel);
             frame.transform.SetParent(panel.transform);
             frame.transform.localPosition = new Vector3(0, position, 0);
-            frame.transform.localScale = new Vector3(1, 1, 1);
+            frame.transform.localScale = scale;
 
-            var user = database.Users.Where(x => x.Id == review.AuthorId).FirstOrDefault();
+            var user = database.GetUserByReview(review.Id);
 
             SetText("User", user.Name, frame.transform);
             SetText("Text", review.Text, frame.transform);

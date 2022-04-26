@@ -3,6 +3,7 @@ using RecommendationSystem.Models;
 using RecommendationSystem.Core.Helpers;
 using System.Net;
 using Newtonsoft.Json;
+using System.Linq;
 
 namespace RecommendationSystem.Controllers
 {
@@ -34,6 +35,18 @@ namespace RecommendationSystem.Controllers
 
         [HttpGet] // получить список пользователей, путь /api/users
         public IActionResult Users() => Ok<User>();
+
+        [HttpGet] // получить список отзывов по продукту /api/userbyreview/?review_id=<type_id>
+        public IActionResult UserByReview(string review_id)
+        {
+            var review = Database.GetObject<Review>($"[id] = {review_id}").FirstOrDefault();
+            if (review is not null)
+            {
+                var user = Database.GetJson<User>($"[id] = {review.AuthorId}");
+                return Ok(user);
+            }
+            return Redirect("api/error");
+        }
 
         [HttpGet] // получить список типов продуктов, путь /api/types
         public IActionResult Types() => Ok<Type>();

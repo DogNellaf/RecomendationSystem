@@ -1,15 +1,11 @@
 using RecommendationSystem.Models;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.UI;
 
 public class PageController : MonoBehaviour
 {
     [SerializeField] private GameObject itemPagePrefab;
-    [SerializeField] private Database database;
     
     public void ShowItemInfo(Item Item)
     {
@@ -18,16 +14,16 @@ public class PageController : MonoBehaviour
 
         var itemPage = Instantiate(itemPagePrefab);
         var transform = itemPage.transform;
-        transform.Find("ItemName").GetComponentInChildren<TextMeshProUGUI>().text = Item.Name;
-        transform.Find("ItemDescription").GetComponentInChildren<TextMeshProUGUI>().text = Item.Description;
-        transform.Find("ReviewsButton").GetComponent<ReviewShower>().Item = Item;
-        var image = transform.Find("ItemImage").GetComponent<Image>();
-        SetImage(Item.Photo, image);
+
+        FindComponent<TextMeshProUGUI>("ItemName", transform).text = Item.Name;
+        FindComponent<TextMeshProUGUI>("ItemDescription", transform).text = Item.Description;
+        FindComponent<ReviewShower>("ReviewsButton", transform).Item = Item;
+        SetImage(Item.Photo, FindComponent<Image>("ItemImage", transform)); 
 
         itemPage.transform.SetParent(gameObject.transform, false);
     }
 
-    private void SetImage(string url, Image image) => StartCoroutine(database.GetImageByName(url, image));
+    private void SetImage(string url, Image image) => StartCoroutine(Database.Find().GetImageByName(url, image));
 
     public void Clear()
     {
@@ -40,4 +36,6 @@ public class PageController : MonoBehaviour
             }
         }
     }
+
+    private T FindComponent<T>(string childName, Transform transform) where T : Component => transform.Find(childName).GetComponentInChildren<T>();
 }

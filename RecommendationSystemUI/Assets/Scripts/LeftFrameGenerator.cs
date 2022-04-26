@@ -7,7 +7,7 @@ public class LeftFrameGenerator : MonoBehaviour
     [SerializeField] private GameObject prefab;
     private void Start()
     {
-        var database = GameObject.Find("Database").GetComponent<Database>();
+        var database = Database.Find();
 
         var types = database.Types;
         var position = 550;

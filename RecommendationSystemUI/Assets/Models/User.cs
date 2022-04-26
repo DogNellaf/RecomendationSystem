@@ -60,7 +60,7 @@ namespace RecommendationSystem.Models
         public User(dynamic objects)
         {
             this.Id = objects["Id"].ToObject<int>();
-            this.name = objects["Username"].ToObject<string>();
+            this.name = objects["Name"].ToObject<string>();
             this.password = objects["Password"].ToObject<string>();
             this.mobile = objects["Mobile"].ToObject<string>();
             this.photo = objects["Photo"].ToObject<string>();

@@ -27,6 +27,10 @@ public class Database: MonoBehaviour
 
     public List<Review> GetReviewsByItem(Item item) => GetObjects<Review>($"reviewsbyitem/?item_id={item.Id}");
 
+    public User GetUserByReview(int reviewId) => GetObject<User>($"userbyreview/?review_id={reviewId}");
+
+    public static Database Find() => GameObject.Find("Database").GetComponent<Database>();
+
     #region utils
 
     public IEnumerator GetImageByName(string name, Image image)
@@ -83,6 +87,22 @@ public class Database: MonoBehaviour
                 result.Add((T)Activator.CreateInstance(typeof(T), parameters));
             }
             return result;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Не удалось считать {typeof(T).Name}, причина {ex.Message}");
+        }
+    }
+
+    public T GetObject<T>(string query) where T : Model
+    {
+        try
+        {
+            string text = GetRequest(query);
+            var raw = JsonConvert.DeserializeObject<dynamic>(text);
+            var parameters = new object[1];
+            parameters[0] = raw.Last;
+            return (T)Activator.CreateInstance(typeof(T), parameters);
         }
         catch (Exception ex)
         {

@@ -24,7 +24,7 @@ namespace RecommendationSystem.Core.Helpers
         }
 
         //функция получения объектов из базы, где Т - любой наследник класса Model
-        private static List<T> GetObject<T>(string where = "") where T : Model
+        internal static List<T> GetObject<T>(string where = "") where T : Model
         {
             // создаем пустой список объектов
             List<T> objects = new();
