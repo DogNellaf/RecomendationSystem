@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Security.Cryptography;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -13,79 +14,132 @@ using UnityEngine.UI;
 public class Database: MonoBehaviour
 {
 
+    // адрес сервера
     [SerializeField] private string Host = "localhost:44381";
 
-    [SerializeField] private bool isConnected = true;
+    // подключен ли клиент
+    //[SerializeField] private bool isConnected = true;
 
+    // включена ли отладка
+    [SerializeField] private bool isDebug = true;
+
+    // страница, выводимая при отсутствии подключения
     [SerializeField] private GameObject noConnectionFrame;
 
+    // список пользователей
     public List<User> Users => GetObjects<User>("users");
 
+    // список типов продуктов
     public List<RecommendationSystem.Models.Type> Types => GetObjects<RecommendationSystem.Models.Type>("types");
 
+    // список продуктов по типу
     public List<Item> GetItemsByType(int typeId) => GetObjects<Item>($"itemsbytype/?type_id={typeId}");
 
+    // список отзывов по продукту
     public List<Review> GetReviewsByItem(Item item) => GetObjects<Review>($"reviewsbyitem/?item_id={item.Id}");
 
+    // получение автора отзыва
     public User GetUserByReview(int reviewId) => GetObject<User>($"userbyreview/?review_id={reviewId}");
 
-    public static Database Find() => GameObject.Find("Database").GetComponent<Database>();
+    // получение хэша пароля пользователя по его id
+    public string GetUserHash(int user_id) => GetRequest($"getuserhash?user_id={user_id}");
 
-    #region utils
+    #region Utils
 
+    // получение картинки с сервера по названию
     public IEnumerator GetImageByName(string name, Image image)
     {
+        // путь до статичных файлов
         string path = $"{Host}/static/{name}";
 
+        // отправляем запрос на скачивание файла
         UnityWebRequest request = UnityWebRequest.Get(path);
         DownloadHandlerTexture downloader = new();
         request.downloadHandler = downloader;
-        Debug.Log($"Попытка загрузки файла по пути {path}");
+
+        // если отладка включена
+        Log($"Попытка загрузки файла по пути {path}");
+
+        // ждем загрузки картинки
         yield return request.SendWebRequest();
+
+        // получаем загруженную картинку
         var texture = downloader.texture;
+
+        // передаем её в интерфейс
         image.sprite = Sprite.Create(texture, new Rect(0.0f, 0.0f, texture.width, texture.height), new Vector2(0.5f, 0.5f), 100.0f);
+
+        Log($"Картинка {texture.name} успешно загружена");
     }
 
+    // получение json как ответ с сервера
     private string GetRequest(string path)
     {
         try
         {
-            HttpWebRequest proxy_request = (HttpWebRequest)WebRequest.Create($"{Host}/api/{path}");
+            string allPath = $"{Host}/api/{path}";
+
+            Log($"Отправлен запрос по пути: {allPath}");
+
+            // кидаем запрос
+            HttpWebRequest proxy_request = (HttpWebRequest)WebRequest.Create(allPath);
             proxy_request.Method = "GET";
             proxy_request.ContentType = @"text/html; charset=windows-1251";
             proxy_request.UserAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US) AppleWebKit/532.5 (KHTML, like Gecko) Chrome/4.0.249.89 Safari/532.5";
             proxy_request.KeepAlive = true;
+
+            // получаем ответ
             HttpWebResponse resp = proxy_request.GetResponse() as HttpWebResponse;
             string text = "";
             using (StreamReader sr = new(resp.GetResponseStream(), Encoding.Default))
                 text = sr.ReadToEnd();
-
             text = text.Trim(new char[] { '"' });
-            isConnected = true;
-            SwitchFrame();
+
+            // отмечаем, что соединение есть
+            //isConnected = true;
+
+            // отключаем панель отсутствия соединения
+            SwitchFrame(true);
+
+            // вовзращаем json
             return text;
         }
-        catch
+        catch (Exception ex)
         {
-            isConnected = false;
-            SwitchFrame();
-            return string.Empty;
+            // включаем панель отсутствия соединения
+            SwitchFrame(false);
+
+            // кидаем ошибку
+
+            throw new Exception($"Не удалось считать по пути '{path}', причина: '{ex.Message}'");
         }
     }
 
+    // функция конвертации списка объектов из json
     public List<T> GetObjects<T>(string query) where T : Model
     {
         try
         {
+            // кидаем запрос на сервер и получаем ответ
             string text = GetRequest(query);
+
+            // конвертируем json в динамический словарь узлов
             var raw = JsonConvert.DeserializeObject<dynamic>(text);
+
+            // создаем пустой-список результат
             List<T> result = new();
+
+            // проходимся по каждому узлу json 
             foreach (var data in raw.Children())
             {
                 var parameters = new object[1];
                 parameters[0] = data;
+
+                // создаем экземпляр объекта
                 result.Add((T)Activator.CreateInstance(typeof(T), parameters));
             }
+            
+            // возвращаем результат
             return result;
         }
         catch (Exception ex)
@@ -94,14 +148,20 @@ public class Database: MonoBehaviour
         }
     }
 
+    // функция получения одного объекта из json
     public T GetObject<T>(string query) where T : Model
     {
         try
         {
+            // кидаем запрос
             string text = GetRequest(query);
+
+            // конвертируем json в динамический словарь узлов
             var raw = JsonConvert.DeserializeObject<dynamic>(text);
             var parameters = new object[1];
             parameters[0] = raw.Last;
+
+            // создаем экземпляр объекта
             return (T)Activator.CreateInstance(typeof(T), parameters);
         }
         catch (Exception ex)
@@ -110,10 +170,16 @@ public class Database: MonoBehaviour
         }
     }
 
-    private void SwitchFrame()
-    {
-        noConnectionFrame.SetActive(!isConnected);
-    }
+    // функция переключения состояния активности панели отсутствия подключения
+    private void SwitchFrame(bool isConnected) => noConnectionFrame.SetActive(!isConnected);
 
+    // функция логирования
+    private void Log(string text)
+    {
+        if (isDebug)
+        {
+            Debug.Log($"[LOG|{DateTime.Now:HH:mm:ss}] {text}");
+        }
+    }
     #endregion
 }

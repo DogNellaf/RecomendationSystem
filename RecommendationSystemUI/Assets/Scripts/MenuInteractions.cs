@@ -1,9 +1,10 @@
+using RecommendationSystem.Models;
 using System.Collections;
 using UnityEngine;
 
 public class MenuInteractions : MonoBehaviour
 {
-    #region LeftFrameInteractions
+    #region Left Frame Interactions
 
     //левая выпадающая менюшка
     [SerializeField] private GameObject leftFrame;
@@ -77,6 +78,22 @@ public class MenuInteractions : MonoBehaviour
         }
         onButtonClicked = false;
     }
+
+    #endregion
+
+    #region Prefs
+    
+    // класс работы с базой данных
+    [SerializeField] private Database database;
+    public Database Database { get => database; }
+
+    // сам объект с содержимым страницы
+    [SerializeField] private GameObject page;
+    public GameObject Page { get => page; }
+    public PageController PageController { get => page.GetComponent<PageController>(); }
+
+    // поиск главного класса
+    public static MenuInteractions Current => GameObject.Find("Canvas").GetComponent<MenuInteractions>();
 
     #endregion
 }

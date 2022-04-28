@@ -6,24 +6,23 @@ using UnityEngine.UI;
 public class TypeButtonClick : MonoBehaviour
 {
     [SerializeField] public int typeId;
-    [SerializeField] private GameObject page;
     [SerializeField] private GameObject itemButtonPrefab;
-    [SerializeField] private MenuInteractions leftFrame;
-    [SerializeField] private Database database;
 
     private void Start()
     {
-        page = GameObject.Find("Page");
-        leftFrame = GameObject.Find("Canvas").GetComponent<MenuInteractions>();
-        database = GameObject.Find("Database").GetComponent<Database>();
     }
 
     public void OnClick()
     {
-        leftFrame.ClosePanel(transform.parent.gameObject);
-        var items = database.GetItemsByType(typeId);
+        var menu = MenuInteractions.Current;
+        var items = menu.Database.GetItemsByType(typeId);
+        var page = menu.Page;
+
+        MenuInteractions.Current.ClosePanel(transform.parent.gameObject);
+        
         var position = 750;
-        page.GetComponent<PageController>().Clear();
+
+        menu.PageController.Clear();
         foreach (Item item in items)
         {
             GameObject frame = Instantiate(itemButtonPrefab);

@@ -53,10 +53,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: "\u041E\u0442\u0437\u044B\u0432\u044B \u043A \u0442\u043E\u0432\u0430\u0440\u0443"
-  database: {fileID: 0}
   reviewPanel: {fileID: 8063461601937048444, guid: e2e8ca19993a8cb4f8d897c92e69a3f2, type: 3}
   panel: {fileID: 3532505192392172719}
   star: {fileID: 21300000, guid: 14d22567a2b87444fb0e0c3f928fda2e, type: 3}
+  scale: {x: 1, y: 1, z: 1}
 --- !u!1 &3532505192392172719
 GameObject:
   m_ObjectHideFlags: 0
@@ -459,8 +459,8 @@ MonoBehaviour:
   m_text: "\u041E\u0442\u0437\u044B\u0432\u044B \u043A \u0442\u043E\u0432\u0430\u0440\u0443
     _\u0438\u043C\u044F_"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: be1b80f5fea369c4f9d99a8a605a1223, type: 2}
+  m_sharedMaterial: {fileID: 1051026555638036538, guid: be1b80f5fea369c4f9d99a8a605a1223, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

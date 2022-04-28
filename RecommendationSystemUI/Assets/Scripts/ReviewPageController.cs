@@ -11,10 +11,10 @@ public class ReviewPageController : MonoBehaviour
     [SerializeField] private GameObject panel;
     [SerializeField] private Sprite star;
     [SerializeField] private Vector3 scale = new Vector3(1, 1, 1);
-    public Item Item { get; set; }
+    public Item Item { private get;  set; }
     void Start()
     {
-        var database = Database.Find();
+        var database = MenuInteractions.Current.Database;
         SetText("Title", $"{title} {Item.Name}", transform);
         var reviews = database.GetReviewsByItem(Item);
         var position = 600;

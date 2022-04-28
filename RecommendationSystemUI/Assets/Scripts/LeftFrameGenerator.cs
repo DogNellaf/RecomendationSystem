@@ -1,13 +1,13 @@
 using RecommendationSystem.Models;
-using TMPro;
 using UnityEngine;
+using TMPro;
 
 public class LeftFrameGenerator : MonoBehaviour
 {
     [SerializeField] private GameObject prefab;
     private void Start()
     {
-        var database = Database.Find();
+        var database = MenuInteractions.Current.Database;
 
         var types = database.Types;
         var position = 550;

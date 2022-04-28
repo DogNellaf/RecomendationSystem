@@ -4,6 +4,8 @@ using RecommendationSystem.Core.Helpers;
 using System.Net;
 using Newtonsoft.Json;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace RecommendationSystem.Controllers
 {
@@ -63,12 +65,65 @@ namespace RecommendationSystem.Controllers
         [HttpGet] // получить список отзывов по продукту /api/reviewsbyitem/?item_id=<type_id>
         public IActionResult ReviewsByItem(string item_id) => Ok<Review>($"[item_id] = {item_id}");
 
+       
+        [HttpGet] // получить пользователя по имени
+        public IActionResult GetUserByName(string name) => Ok(Database.GetJson<User>($"[username] = '{name}'").Trim('[').Trim(']'));
+
+        [HttpGet] // получить хэш пароля текущего пользователя
+        public IActionResult GetUserHash(string user_id)
+        {
+            var users = Database.GetObject<User>();
+            int userId = int.Parse(user_id);
+            var user = users.Where(x => x.Id == userId).FirstOrDefault();
+            return Ok(user.Password);
+        }
+
+        [HttpGet] // проверка на корректность хэша
+        public IActionResult CheckUserHash(string user_id, string password)
+        {
+            try
+            {
+                var users = Database.GetObject<User>();
+                int userId = int.Parse(user_id);
+                var user = users.Where(x => x.Id == userId).FirstOrDefault();
+
+                var hash = Encrypt(password);
+
+                if (hash == user.Password)
+                {
+                    return Ok(user);
+                }
+                else
+                {
+                    return Ok(new User());
+                }
+            }
+            catch
+            {
+                return Redirect("api/error");
+            }
+            
+        }
+
         #endregion
 
         #region Utils
 
         // вспомогательный метод для сокращения
         private ActionResult Ok<T>(string where = "") where T: Model => Ok(Database.GetJson<T>(where));
+
+        // функция формирования хэша
+        public static string Encrypt(string value)
+        {
+            var crypt = new SHA256Managed();
+            var hash = new StringBuilder();
+            byte[] crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(value));
+            foreach (byte theByte in crypto)
+            {
+                hash.Append(theByte.ToString("x2"));
+            }
+            return hash.ToString();
+        }
 
         #endregion
     }
