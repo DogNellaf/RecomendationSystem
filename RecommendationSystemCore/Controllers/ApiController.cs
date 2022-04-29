@@ -1,9 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using RecommendationSystem.Models;
-using RecommendationSystem.Core.Helpers;
-using System.Net;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using RecommendationSystem.Core.Helpers;
+using RecommendationSystem.Models;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -26,13 +31,13 @@ namespace RecommendationSystem.Controllers
         }
 
         [HttpGet] // любой нестандартный путь + ошибки, путь /api/error
-        public IActionResult Error()
+        public IActionResult Error(string message)
         {
             // возвращаем статус Плохой запрос
             Response.StatusCode = (int)HttpStatusCode.BadRequest;
 
             // сообщаем, что произошла ошибка
-            return Json(new { ErrorMessage = "Bad Request" });
+            return Json(new { ErrorMessage = message });
         }
 
         [HttpGet] // получить список пользователей, путь /api/users
@@ -47,11 +52,11 @@ namespace RecommendationSystem.Controllers
                 var user = Database.GetJson<User>($"[id] = {review.AuthorId}");
                 return Ok(user);
             }
-            return Redirect("api/error");
+            return Redirect("api/error?message=user doesn't exists");
         }
 
         [HttpGet] // получить список типов продуктов, путь /api/types
-        public IActionResult Types() => Ok<Type>();
+        public IActionResult Types() => Ok<Models.Type>();
 
         [HttpGet] // получить список продуктов по типу /api/itemsbytype/?type_id=<type_id>
         public IActionResult ItemsByType(string type_id) => Ok<Item>($"[type_id] = {type_id}");
@@ -65,11 +70,11 @@ namespace RecommendationSystem.Controllers
         [HttpGet] // получить список отзывов по продукту /api/reviewsbyitem/?item_id=<type_id>
         public IActionResult ReviewsByItem(string item_id) => Ok<Review>($"[item_id] = {item_id}");
 
-       
-        [HttpGet] // получить пользователя по имени
-        public IActionResult GetUserByName(string name) => Ok(Database.GetJson<User>($"[username] = '{name}'").Trim('[').Trim(']'));
 
-        [HttpGet] // получить хэш пароля текущего пользователя
+        [HttpGet] // получить пользователя по имени /api/getuserbyname?name=<имя>
+        public IActionResult GetUserByName(string name) => Ok<User>($"[username] = '{name}'");
+
+        [HttpGet] // получить хэш пароля текущего пользователя /api/getuserhash?user_id=<id>
         public IActionResult GetUserHash(string user_id)
         {
             var users = Database.GetObject<User>();
@@ -78,7 +83,7 @@ namespace RecommendationSystem.Controllers
             return Ok(user.Password);
         }
 
-        [HttpGet] // проверка на корректность хэша
+        [HttpGet] // проверка на корректность хэша /api/checkuserhash?user_id=<id>&password=<password>
         public IActionResult CheckUserHash(string user_id, string password)
         {
             try
@@ -88,29 +93,70 @@ namespace RecommendationSystem.Controllers
                 var user = users.Where(x => x.Id == userId).FirstOrDefault();
 
                 var hash = Encrypt(password);
+                var result = new List<User>();
 
                 if (hash == user.Password)
                 {
-                    return Ok(user);
+                    result.Add(user);
                 }
                 else
                 {
-                    return Ok(new User());
+                    result.Add(new User());
+                    
                 }
+                return Ok(JsonConvert.SerializeObject(result));
             }
-            catch
+            catch (Exception ex)
             {
-                return Redirect("api/error");
+                return Redirect($"api/error?message={ex.Message}");
             }
             
         }
 
-        #endregion
+        [HttpPost] // загрузка аватарки /api/sendavatar
+        public IActionResult SendAvatar(IFormFile files)
+        {
+            var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase);
+            try
+            {
+                if (files.Length > 0)
+                {
+                    string staticPath = $"{path}/static";
 
-        #region Utils
+                    if (!Directory.Exists(staticPath))
+                    {
+                        Directory.CreateDirectory(staticPath);
+                    }
 
-        // вспомогательный метод для сокращения
-        private ActionResult Ok<T>(string where = "") where T: Model => Ok(Database.GetJson<T>(where));
+                    string filePath = $"{staticPath}/{files.FileName}";
+
+                    if (System.IO.File.Exists(filePath))
+                        return Redirect("api/error?message=file exists");
+
+                    using (FileStream fileStream = System.IO.File.Create(filePath))
+                    {
+                        files.CopyTo(fileStream);
+                        fileStream.Flush();
+                        return Ok($"File uplodaded");
+                    }
+                }
+                else
+                {
+                    return Redirect("api/error?message=no one files");
+                }
+            }
+            catch (Exception ex)
+            {
+                return Redirect($"api/error?message={ex.Message}");
+            }
+        }
+
+#endregion
+
+#region Utils
+
+// вспомогательный метод для сокращения
+private ActionResult Ok<T>(string where = "") where T: Model => Ok(Database.GetJson<T>(where));
 
         // функция формирования хэша
         public static string Encrypt(string value)

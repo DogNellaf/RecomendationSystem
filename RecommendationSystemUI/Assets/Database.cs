@@ -170,6 +170,36 @@ public class Database: MonoBehaviour
         }
     }
 
+    // функция загрузки картинки
+    public void SetImage(string url, Image image) => StartCoroutine(GetImageByName(url, image));
+
+    // функция отправки изображения
+    public void UploadTexture(Texture2D tex) => StartCoroutine(UploadTextureRoutine(tex));
+
+    // корунтина для отправки изображения
+    private IEnumerator UploadTextureRoutine(Texture2D tex)
+    {
+        var bytes = tex.EncodeToPNG();
+        var form = new WWWForm();
+        form.AddField("id", "Image01");
+        form.AddBinaryData("image", bytes, $"{tex.name}.png", "image/png");
+
+        using (var unityWebRequest = UnityWebRequest.Post("https://mywebsite.com", form))
+        {
+            unityWebRequest.SetRequestHeader("Authorization", "Token 555myToken555");
+
+            yield return unityWebRequest.SendWebRequest();
+
+            if (unityWebRequest.result != UnityWebRequest.Result.Success)
+            {
+                print($"Failed to upload {tex.name}: {unityWebRequest.result} - {unityWebRequest.error}");
+            }
+            else
+            {
+                print($"Finished Uploading {tex.name}");
+            }
+        }
+    }
     // функция переключения состояния активности панели отсутствия подключения
     private void SwitchFrame(bool isConnected) => noConnectionFrame.SetActive(!isConnected);
 

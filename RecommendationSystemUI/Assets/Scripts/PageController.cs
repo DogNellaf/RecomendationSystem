@@ -22,7 +22,7 @@ public class PageController : MonoBehaviour
         FindComponent<TextMeshProUGUI>("ItemName", transform).text = Item.Name;
         FindComponent<TextMeshProUGUI>("ItemDescription", transform).text = Item.Description;
         FindComponent<ReviewShower>("ReviewsButton", transform).Item = Item;
-        SetImage(Item.Photo, FindComponent<Image>("ItemImage", transform)); 
+        Menu.Database.SetImage(Item.Photo, FindComponent<Image>("ItemImage", transform)); 
     }
 
     public GameObject ShowPage(GameObject etalon)
@@ -49,7 +49,7 @@ public class PageController : MonoBehaviour
 
     private T FindComponent<T>(string childName, Transform transform) where T : Component => transform.Find(childName).GetComponentInChildren<T>();
 
-    private void SetImage(string url, Image image) => StartCoroutine(Menu.Database.GetImageByName(url, image));
+    
 
     #endregion
 

@@ -1,5 +1,7 @@
 using RecommendationSystem.Models;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AccountManagement : MonoBehaviour
 {
@@ -21,8 +23,10 @@ public class AccountManagement : MonoBehaviour
     }
 
     // функция авторизации
-    public void SetUser(string name, string password)
+    public void SetUser(GameObject parent)
     {
+        string name = Find("NameField", parent.transform).GetComponent<TMP_InputField>().text;
+        string password = Find("PasswordField", parent.transform).GetComponent<TMP_InputField>().text;
         var database = MenuInteractions.Current.Database;
 
         var rawUser = database.GetObject<User>($"getuserbyname?name={name}");
@@ -30,7 +34,7 @@ public class AccountManagement : MonoBehaviour
         if (!string.IsNullOrEmpty(user.Name))
         {
             currentUser = user;
-            Debug.Log("true");
+            ShowAccount();
         }
         else
         {
@@ -38,30 +42,47 @@ public class AccountManagement : MonoBehaviour
         }
     }
 
+    private GameObject Find(string name, Transform parent) => parent.Find(name).gameObject; 
+
+    // обработка нажатия
     public void OnClick()
     {
         menu.ClosePanel(transform.parent.gameObject);
 
         if (currentUser == null)
         {
-            menu.PageController.ShowPage(loginPrefab);
+            ShowLogin();
         }
         else
         {
-            menu.PageController.ShowPage(accountPrefab);
+            ShowAccount();
         }
     }
 
+    // функция показа данных пользователя
+    private void ShowAccount()
+    {
+        var page = menu.PageController.ShowPage(accountPrefab);
+        Find("UserName", page.transform).GetComponent<TextMeshProUGUI>().text = currentUser.Name;
+        if (currentUser.Photo != null)
+        {
+            var avatar = Find("Avatar", page.transform).GetComponent<Image>();
+            MenuInteractions.Current.Database.SetImage(currentUser.Photo, avatar);
+        }
+        Find("Exit", page.transform).GetComponent<Button>().onClick.AddListener(delegate { Exit(); });
+    }
 
-    //// Start is called before the first frame update
-    //void Start()
-    //{
-        
-    //}
+    // функция показа страницы авторизации
+    private void ShowLogin()
+    {
+        var login = menu.PageController.ShowPage(loginPrefab);
+        Find("Button", login.transform).GetComponent<Button>().onClick.AddListener(delegate { SetUser(login); });
+    }
 
-    //// Update is called once per frame
-    //void Update()
-    //{
-        
-    //}
+    // функция выхода из аккаунта
+    private void Exit()
+    {
+        currentUser = null;
+        ShowLogin();
+    }
 }
