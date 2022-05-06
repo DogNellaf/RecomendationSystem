@@ -92,6 +92,11 @@ public class MenuInteractions : MonoBehaviour
     public GameObject Page { get => page; }
     public PageController PageController { get => page.GetComponent<PageController>(); }
 
+    // контроллер аккаунта
+    [SerializeField] private GameObject account;
+    public GameObject Account { get => account; }
+    public AccountManagement AccountController { get => Account.GetComponent<AccountManagement>(); }
+
     // поиск главного класса
     public static MenuInteractions Current => GameObject.Find("Canvas").GetComponent<MenuInteractions>();
 

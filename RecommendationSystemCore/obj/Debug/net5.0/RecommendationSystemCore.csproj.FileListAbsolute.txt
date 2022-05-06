@@ -109,7 +109,6 @@ G:\Projects\RecomendationSystem\RecommendationSystemCore\obj\Debug\net5.0\Recomm
 G:\Projects\RecomendationSystem\RecommendationSystemCore\obj\Debug\net5.0\RecommendationSystemCore.RazorAssemblyInfo.cache
 G:\Projects\RecomendationSystem\RecommendationSystemCore\obj\Debug\net5.0\RecommendationSystemCore.RazorAssemblyInfo.cs
 G:\Projects\RecomendationSystem\RecommendationSystemCore\obj\Debug\net5.0\staticwebassets\RecommendationSystemCore.StaticWebAssets.Manifest.cache
-G:\Projects\RecomendationSystem\RecommendationSystemCore\obj\Debug\net5.0\staticwebassets\RecommendationSystemCore.StaticWebAssets.xml
 G:\Projects\RecomendationSystem\RecommendationSystemCore\obj\Debug\net5.0\scopedcss\bundle\RecommendationSystemCore.styles.css
 G:\Projects\RecomendationSystem\RecommendationSystemCore\obj\Debug\net5.0\RecommendationSystemCore.TagHelpers.input.cache
 G:\Projects\RecomendationSystem\RecommendationSystemCore\obj\Debug\net5.0\RecommendationSystemCore.TagHelpers.output.cache

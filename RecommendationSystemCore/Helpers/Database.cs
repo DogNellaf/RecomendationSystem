@@ -57,6 +57,9 @@ namespace RecommendationSystem.Core.Helpers
             return objects;
         }
 
+        // обновление авы у пользователя
+        internal static void UploadAvatar(string path, int id) => SendSQL($"UPDATE dbo.[User] SET photo = '{path}' WHERE id = {id}");
+
         // функция отправки SQL запроса
         private static DataTable SendSQL(string query)
         {
@@ -77,7 +80,6 @@ namespace RecommendationSystem.Core.Helpers
 
                 // заполняем таблицу
                 adapter.Fill(result);
-
             }
 
             // если словили ошибку

@@ -7,6 +7,7 @@ using System.IO;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -174,29 +175,35 @@ public class Database: MonoBehaviour
     public void SetImage(string url, Image image) => StartCoroutine(GetImageByName(url, image));
 
     // функция отправки изображения
-    public void UploadTexture(Texture2D tex) => StartCoroutine(UploadTextureRoutine(tex));
+    public void UploadTexture(int id) => StartCoroutine(UploadTextureRoutine(id));
 
     // корунтина для отправки изображения
-    private IEnumerator UploadTextureRoutine(Texture2D tex)
+    private IEnumerator UploadTextureRoutine(int id)
     {
-        var bytes = tex.EncodeToPNG();
-        var form = new WWWForm();
-        form.AddField("id", "Image01");
-        form.AddBinaryData("image", bytes, $"{tex.name}.png", "image/png");
-
-        using (var unityWebRequest = UnityWebRequest.Post("https://mywebsite.com", form))
+        string path = EditorUtility.OpenFilePanel("Load new avatar", "", "png");
+        if (path.Length != 0)
         {
-            unityWebRequest.SetRequestHeader("Authorization", "Token 555myToken555");
+            WWW www = new($@"file:/{path}");
+            while (!www.isDone)
+                yield return null;
+            Texture2D avatar = www.texture;
+            var bytes = avatar.EncodeToJPG();
+            List<IMultipartFormSection> form = new();
+            form.Add(new MultipartFormFileSection("files", bytes, "test.jpeg", "image/jpeg"));
+            form.Add(new MultipartFormDataSection("id", $"{id}"));
 
-            yield return unityWebRequest.SendWebRequest();
+            using (var unityWebRequest = UnityWebRequest.Post($"{Host}/api/sendavatar", form))
+            {
+                yield return unityWebRequest.SendWebRequest();
 
-            if (unityWebRequest.result != UnityWebRequest.Result.Success)
-            {
-                print($"Failed to upload {tex.name}: {unityWebRequest.result} - {unityWebRequest.error}");
-            }
-            else
-            {
-                print($"Finished Uploading {tex.name}");
+                if (unityWebRequest.result != UnityWebRequest.Result.Success)
+                {
+                    print($"Failed to upload {avatar.name}: {unityWebRequest.result} - {unityWebRequest.error}");
+                }
+                else
+                {
+                    print($"Finished Uploading {avatar.name}");
+                }
             }
         }
     }

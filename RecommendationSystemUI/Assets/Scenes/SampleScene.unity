@@ -1093,6 +1093,7 @@ MonoBehaviour:
   leftFrameIsOpened: 0
   database: {fileID: 265979096}
   page: {fileID: 337575229}
+  account: {fileID: 2712665080843275106}
 --- !u!1 &1627280769
 GameObject:
   m_ObjectHideFlags: 0

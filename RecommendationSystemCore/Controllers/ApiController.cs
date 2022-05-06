@@ -114,9 +114,10 @@ namespace RecommendationSystem.Controllers
         }
 
         [HttpPost] // загрузка аватарки /api/sendavatar
-        public IActionResult SendAvatar(IFormFile files)
+        [Route("api/sendavatar")]
+        public IActionResult SendAvatar(IFormFile files, string id)
         {
-            var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase);
+            var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase).Replace("file:\\", "");
             try
             {
                 if (files.Length > 0)
@@ -137,8 +138,11 @@ namespace RecommendationSystem.Controllers
                     {
                         files.CopyTo(fileStream);
                         fileStream.Flush();
-                        return Ok($"File uplodaded");
                     }
+
+                    Database.UploadAvatar(files.FileName, int.Parse(id));
+
+                    return Ok($"File uplodaded");
                 }
                 else
                 {

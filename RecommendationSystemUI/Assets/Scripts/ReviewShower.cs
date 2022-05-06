@@ -1,15 +1,11 @@
 using RecommendationSystem.Models;
+using UnityEditor;
 using UnityEngine;
 
 public class ReviewShower : MonoBehaviour
 {
     [SerializeField] private GameObject ReviewPage;
     public Item Item { private get; set; }
-
-    //private void Start()
-    //{
-        
-    //}
 
     public void ShowReviews()
     {

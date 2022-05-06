@@ -1,5 +1,6 @@
 using RecommendationSystem.Models;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -42,6 +43,10 @@ public class AccountManagement : MonoBehaviour
         }
     }
 
+    // загрузить фото
+    public void UploadPhoto() => MenuInteractions.Current.Database.UploadTexture(currentUser.Id);
+
+    // найти объект по имени
     private GameObject Find(string name, Transform parent) => parent.Find(name).gameObject; 
 
     // обработка нажатия
