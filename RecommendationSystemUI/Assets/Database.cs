@@ -84,6 +84,7 @@ public class Database: MonoBehaviour
 
             // кидаем запрос
             HttpWebRequest proxy_request = (HttpWebRequest)WebRequest.Create(allPath);
+            proxy_request.ServerCertificateValidationCallback = delegate { return true; };
             proxy_request.Method = "GET";
             proxy_request.ContentType = @"text/html; charset=windows-1251";
             proxy_request.UserAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US) AppleWebKit/532.5 (KHTML, like Gecko) Chrome/4.0.249.89 Safari/532.5";

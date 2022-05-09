@@ -11,7 +11,11 @@ namespace RecommendationSystem.Core.Helpers
     public static class Database
     {
         // строка соединения с базой данных
-        private static string connectionString = @"Server=.\SQLEXPRESS;Database=RecomendationSystem;Trusted_Connection=True;TrustServerCertificate=true;";
+        //private static string connectionString = @"Server=.\SQLEXPRESS;Database=RecomendationSystem;Trusted_Connection=True;TrustServerCertificate=true;";
+
+        private static string databaseName = "u1674941_RecomendationSystem";
+
+        private static string connectionString = @"Server=u1674941.plsk.regruhosting.ru;Database=u1674941_RecomendationSystem;User Id=u1674941_obama;Password=1oylVF4W@lecbly1;TrustServerCertificate=true;";
 
         // универсальная функция для получения json по объекту Т (любой наследник класса Model)
         internal static string GetJson<T>(string where = "") where T: Model
@@ -30,10 +34,10 @@ namespace RecommendationSystem.Core.Helpers
             List<T> objects = new();
 
             // проверяем, есть ли условие
-            string query = $"SELECT * FROM [RecomendationSystem].[dbo].[{typeof(T).Name}]";
+            string query = $"SELECT * FROM [{databaseName}].[dbo].[{typeof(T).Name}]";
             if (where != "")
             {
-                query = $"SELECT * FROM [RecomendationSystem].[dbo].[{typeof(T).Name}] where {where}";
+                query = $"SELECT * FROM [{databaseName}].[dbo].[{typeof(T).Name}] where {where}";
             }
 
             // кидаем запрос на выборку

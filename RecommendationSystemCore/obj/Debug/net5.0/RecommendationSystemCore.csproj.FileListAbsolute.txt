@@ -71,7 +71,6 @@ G:\Projects\RecomendationSystem\RecommendationSystemCore\bin\Debug\net5.0\Recomm
 G:\Projects\RecomendationSystem\RecommendationSystemCore\bin\Debug\net5.0\RecommendationSystemCore.runtimeconfig.json
 G:\Projects\RecomendationSystem\RecommendationSystemCore\bin\Debug\net5.0\RecommendationSystemCore.runtimeconfig.dev.json
 G:\Projects\RecomendationSystem\RecommendationSystemCore\bin\Debug\net5.0\RecommendationSystemCore.dll
-G:\Projects\RecomendationSystem\RecommendationSystemCore\bin\Debug\net5.0\ref\RecommendationSystemCore.dll
 G:\Projects\RecomendationSystem\RecommendationSystemCore\bin\Debug\net5.0\RecommendationSystemCore.pdb
 G:\Projects\RecomendationSystem\RecommendationSystemCore\bin\Debug\net5.0\RecommendationSystemCore.Views.dll
 G:\Projects\RecomendationSystem\RecommendationSystemCore\bin\Debug\net5.0\RecommendationSystemCore.Views.pdb
@@ -127,3 +126,4 @@ G:\Projects\RecomendationSystem\RecommendationSystemCore\obj\Debug\net5.0\Recomm
 G:\Projects\RecomendationSystem\RecommendationSystemCore\obj\Debug\net5.0\RecommendationSystemCore.genruntimeconfig.cache
 G:\Projects\RecomendationSystem\RecommendationSystemCore\obj\Debug\net5.0\RecommendationSystemCore.csproj.CopyComplete
 G:\Projects\RecomendationSystem\RecommendationSystemCore\bin\Debug\net5.0\Newtonsoft.Json.dll
+G:\Projects\RecomendationSystem\RecommendationSystemCore\bin\Debug\net5.0\ref\RecommendationSystemCore.dll
