@@ -5,7 +5,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Security.Cryptography;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
@@ -61,8 +60,11 @@ public class Database: MonoBehaviour
         // если отладка включена
         Log($"Попытка загрузки файла по пути {path}");
 
+        request.SendWebRequest();
+
         // ждем загрузки картинки
-        yield return request.SendWebRequest();
+        while (!request.isDone)
+            yield return null;
 
         // получаем загруженную картинку
         var texture = downloader.texture;
@@ -74,7 +76,7 @@ public class Database: MonoBehaviour
     }
 
     // получение json как ответ с сервера
-    private string GetRequest(string path)
+    private string GetRequest(string path, string method = "GET")
     {
         try
         {
@@ -85,7 +87,7 @@ public class Database: MonoBehaviour
             // кидаем запрос
             HttpWebRequest proxy_request = (HttpWebRequest)WebRequest.Create(allPath);
             proxy_request.ServerCertificateValidationCallback = delegate { return true; };
-            proxy_request.Method = "GET";
+            proxy_request.Method = method;
             proxy_request.ContentType = @"text/html; charset=windows-1251";
             proxy_request.UserAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US) AppleWebKit/532.5 (KHTML, like Gecko) Chrome/4.0.249.89 Safari/532.5";
             proxy_request.KeepAlive = true;
@@ -178,32 +180,58 @@ public class Database: MonoBehaviour
     // функция отправки изображения
     public void UploadTexture(int id) => StartCoroutine(UploadTextureRoutine(id));
 
+    // функция создания пользователя
+    public void AddUser(string username, string password) 
+    {
+        string allPath = $"createuser?username={username}&password={password}";
+        Log($"Отправлен запрос по пути: {allPath}");
+        GetRequest(allPath);
+    } 
+
     // корунтина для отправки изображения
     private IEnumerator UploadTextureRoutine(int id)
     {
-        string path = EditorUtility.OpenFilePanel("Load new avatar", "", "png");
-        if (path.Length != 0)
+        Texture2D texture = null;
+        string filePath = "";
+        NativeGallery.Permission permission = NativeGallery.GetImageFromGallery((path) =>
         {
-            WWW www = new($@"file:/{path}");
-            while (!www.isDone)
-                yield return null;
-            Texture2D avatar = www.texture;
-            var bytes = avatar.EncodeToJPG();
+            filePath = path;
+
+            if (isDebug)
+                Debug.Log("Image path: " + path);
+
+            if (path != null)
+            {
+                // Create Texture from selected image
+                texture = NativeGallery.LoadImageAtPath(path, -1, false);
+                if (texture == null)
+                {
+                    Debug.Log("Couldn't load texture from " + path);
+                    return;
+                }
+            }
+        });
+
+        if (texture != null)
+        {
+            var bytes = texture.EncodeToJPG();
             List<IMultipartFormSection> form = new();
             form.Add(new MultipartFormFileSection("files", bytes, "test.jpeg", "image/jpeg"));
             form.Add(new MultipartFormDataSection("id", $"{id}"));
 
             using (var unityWebRequest = UnityWebRequest.Post($"{Host}/api/sendavatar", form))
             {
+                var cert = new ForceAcceptAll();
+                unityWebRequest.certificateHandler = cert;
                 yield return unityWebRequest.SendWebRequest();
 
                 if (unityWebRequest.result != UnityWebRequest.Result.Success)
                 {
-                    print($"Failed to upload {avatar.name}: {unityWebRequest.result} - {unityWebRequest.error}");
+                    print($"Failed to upload {texture.name}: {unityWebRequest.result} - {unityWebRequest.error}");
                 }
                 else
                 {
-                    print($"Finished Uploading {avatar.name}");
+                    print($"Finished Uploading {texture.name}");
                 }
             }
         }
@@ -220,4 +248,12 @@ public class Database: MonoBehaviour
         }
     }
     #endregion
+
+    public class ForceAcceptAll : CertificateHandler
+    {
+        protected override bool ValidateCertificate(byte[] certificateData)
+        {
+            return true;
+        }
+    }
 }

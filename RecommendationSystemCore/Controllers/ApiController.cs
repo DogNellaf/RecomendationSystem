@@ -83,6 +83,29 @@ namespace RecommendationSystem.Controllers
             return Ok(user.Password);
         }
 
+        [HttpGet("api/createuser")]
+        public IActionResult CreateUser(string username, string password)
+        {
+            try
+            {
+                var users = Database.GetObject<User>();
+                var names = users.Select(x => x.Name);
+                if (!names.Contains(username))
+                {
+                    Database.AddUser(username, Encrypt(password));
+                    return Json(new { Message = "User added" });
+                }
+                else
+                {
+                    return Json(new { Message = "User already exists" });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Redirect($"api/error?message={ex.Message}");
+            }
+        }
+
         [HttpGet] // проверка на корректность хэша /api/checkuserhash?user_id=<id>&password=<password>
         public IActionResult CheckUserHash(string user_id, string password)
         {
@@ -132,7 +155,7 @@ namespace RecommendationSystem.Controllers
                     string filePath = $"{staticPath}/{files.FileName}";
 
                     if (System.IO.File.Exists(filePath))
-                        return Redirect("api/error?message=file exists");
+                        return Ok($"File uplodaded");
 
                     using (FileStream fileStream = System.IO.File.Create(filePath))
                     {
@@ -142,15 +165,18 @@ namespace RecommendationSystem.Controllers
 
                     Database.UploadAvatar(files.FileName, int.Parse(id));
 
+                    Response.StatusCode = 200;
                     return Ok($"File uplodaded");
                 }
                 else
                 {
+                    Response.StatusCode = 422;
                     return Redirect("api/error?message=no one files");
                 }
             }
             catch (Exception ex)
             {
+                Response.StatusCode = 500;
                 return Redirect($"api/error?message={ex.Message}");
             }
         }
@@ -159,8 +185,8 @@ namespace RecommendationSystem.Controllers
 
 #region Utils
 
-// вспомогательный метод для сокращения
-private ActionResult Ok<T>(string where = "") where T: Model => Ok(Database.GetJson<T>(where));
+        // вспомогательный метод для сокращения
+        private ActionResult Ok<T>(string where = "") where T: Model => Ok(Database.GetJson<T>(where));
 
         // функция формирования хэша
         public static string Encrypt(string value)

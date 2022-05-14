@@ -1,6 +1,5 @@
 using RecommendationSystem.Models;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,11 +25,16 @@ public class AccountManagement : MonoBehaviour
     // функция авторизации
     public void SetUser(GameObject parent)
     {
-        string name = Find("NameField", parent.transform).GetComponent<TMP_InputField>().text;
+        bool isNewUser = Find("NewUser", parent.transform).GetComponent<Toggle>().isOn;
+        string username = Find("NameField", parent.transform).GetComponent<TMP_InputField>().text;
         string password = Find("PasswordField", parent.transform).GetComponent<TMP_InputField>().text;
         var database = MenuInteractions.Current.Database;
+        if (isNewUser)
+        {
+            database.AddUser(username, password);
+        }
 
-        var rawUser = database.GetObject<User>($"getuserbyname?name={name}");
+        var rawUser = database.GetObject<User>($"getuserbyname?name={username}");
         var user = database.GetObject<User>($"checkuserhash?user_id={rawUser.Id}&password={password}");
         if (!string.IsNullOrEmpty(user.Name))
         {

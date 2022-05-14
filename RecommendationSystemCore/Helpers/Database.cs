@@ -64,6 +64,9 @@ namespace RecommendationSystem.Core.Helpers
         // обновление авы у пользователя
         internal static void UploadAvatar(string path, int id) => SendSQL($"UPDATE dbo.[User] SET photo = '{path}' WHERE id = {id}");
 
+        // добавление нового пользователя
+        internal static void AddUser(string username, string password) => SendSQL($"INSERT INTO dbo.[User] VALUES ('{username}', '{password}', '', '')");
+
         // функция отправки SQL запроса
         private static DataTable SendSQL(string query)
         {
