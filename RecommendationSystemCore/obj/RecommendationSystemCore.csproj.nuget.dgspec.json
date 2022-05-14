@@ -1,25 +1,21 @@
 {
   "format": 1,
   "restore": {
-    "G:\\Projects\\RecomendationSystem\\RecommendationSystemCore\\RecommendationSystemCore.csproj": {}
+    "C:\\Users\\DogNellaf\\Desktop\\Программирование\\RecomendationSystem\\RecommendationSystemCore\\RecommendationSystemCore.csproj": {}
   },
   "projects": {
-    "G:\\Projects\\RecomendationSystem\\RecommendationSystemCore\\RecommendationSystemCore.csproj": {
+    "C:\\Users\\DogNellaf\\Desktop\\Программирование\\RecomendationSystem\\RecommendationSystemCore\\RecommendationSystemCore.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "G:\\Projects\\RecomendationSystem\\RecommendationSystemCore\\RecommendationSystemCore.csproj",
+        "projectUniqueName": "C:\\Users\\DogNellaf\\Desktop\\Программирование\\RecomendationSystem\\RecommendationSystemCore\\RecommendationSystemCore.csproj",
         "projectName": "RecommendationSystemCore",
-        "projectPath": "G:\\Projects\\RecomendationSystem\\RecommendationSystemCore\\RecommendationSystemCore.csproj",
-        "packagesPath": "C:\\Users\\Данилидзе\\.nuget\\packages\\",
-        "outputPath": "G:\\Projects\\RecomendationSystem\\RecommendationSystemCore\\obj\\",
+        "projectPath": "C:\\Users\\DogNellaf\\Desktop\\Программирование\\RecomendationSystem\\RecommendationSystemCore\\RecommendationSystemCore.csproj",
+        "packagesPath": "C:\\Users\\DogNellaf\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\DogNellaf\\Desktop\\Программирование\\RecomendationSystem\\RecommendationSystemCore\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Данилидзе\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\DogNellaf\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
@@ -63,12 +59,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.NETCore.App.Host.win-x64",
-              "version": "[5.0.16, 5.0.16]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -77,7 +67,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.202\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -15,7 +15,25 @@ public class Database: MonoBehaviour
 {
 
     // адрес сервера
-    [SerializeField] private string Host = "localhost:44381";
+    [SerializeField] private string localHost = @"http://localhost:44381";
+
+    [SerializeField] private string internetHost = @"http://u1674941.plsk.regruhosting.ru";
+
+    [SerializeField] private bool isLocal = true;
+
+    private string host = "";
+
+    private void Start()
+    {
+        if (isLocal)
+        {
+            host = localHost;
+        }
+        else
+        {
+            host = internetHost;
+        }
+    }
 
     // подключен ли клиент
     //[SerializeField] private bool isConnected = true;
@@ -50,12 +68,13 @@ public class Database: MonoBehaviour
     public IEnumerator GetImageByName(string name, Image image)
     {
         // путь до статичных файлов
-        string path = $"{Host}/static/{name}";
+        string path = $"{host}/static/{name}";
 
         // отправляем запрос на скачивание файла
         UnityWebRequest request = UnityWebRequest.Get(path);
         DownloadHandlerTexture downloader = new();
         request.downloadHandler = downloader;
+        request.certificateHandler = new ForceAcceptAll();
 
         // если отладка включена
         Log($"Попытка загрузки файла по пути {path}");
@@ -80,20 +99,21 @@ public class Database: MonoBehaviour
     {
         try
         {
-            string allPath = $"{Host}/api/{path}";
+            string finalPath = $"{host}/api/{path}";
 
-            Log($"Отправлен запрос по пути: {allPath}");
+            Log($"Отправлен запрос по пути: {finalPath}");
 
             // кидаем запрос
-            HttpWebRequest proxy_request = (HttpWebRequest)WebRequest.Create(allPath);
-            proxy_request.ServerCertificateValidationCallback = delegate { return true; };
-            proxy_request.Method = method;
-            proxy_request.ContentType = @"text/html; charset=windows-1251";
-            proxy_request.UserAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US) AppleWebKit/532.5 (KHTML, like Gecko) Chrome/4.0.249.89 Safari/532.5";
-            proxy_request.KeepAlive = true;
+            var request = WebRequest.Create(finalPath) as HttpWebRequest;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            request.ServerCertificateValidationCallback = delegate { return true; };
+            request.Method = method;
+            request.ContentType = @"text/html; charset=windows-1251";
+            request.UserAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US) AppleWebKit/532.5 (KHTML, like Gecko) Chrome/4.0.249.89 Safari/532.5";
+            request.Timeout = 5000;
 
             // получаем ответ
-            HttpWebResponse resp = proxy_request.GetResponse() as HttpWebResponse;
+            HttpWebResponse resp = request.GetResponse() as HttpWebResponse;
             string text = "";
             using (StreamReader sr = new(resp.GetResponseStream(), Encoding.Default))
                 text = sr.ReadToEnd();
@@ -219,7 +239,7 @@ public class Database: MonoBehaviour
             form.Add(new MultipartFormFileSection("files", bytes, "test.jpeg", "image/jpeg"));
             form.Add(new MultipartFormDataSection("id", $"{id}"));
 
-            using (var unityWebRequest = UnityWebRequest.Post($"{Host}/api/sendavatar", form))
+            using (var unityWebRequest = UnityWebRequest.Post($"{host}/api/sendavatar", form))
             {
                 var cert = new ForceAcceptAll();
                 unityWebRequest.certificateHandler = cert;

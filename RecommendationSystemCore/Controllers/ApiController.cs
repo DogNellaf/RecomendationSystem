@@ -140,7 +140,7 @@ namespace RecommendationSystem.Controllers
         [Route("api/sendavatar")]
         public IActionResult SendAvatar(IFormFile files, string id)
         {
-            var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase).Replace("file:\\", "");
+            var path = Environment.CurrentDirectory;
             try
             {
                 if (files.Length > 0)

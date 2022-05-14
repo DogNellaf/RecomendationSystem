@@ -152,7 +152,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09552b6bb044ae944a5bbe71c5e309be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Host: https://localhost:44381
+  localHost: http:/localhost:44381
+  internetHost: http:/u1674941.plsk.regruhosting.ru
+  isLocal: 1
   isDebug: 1
   noConnectionFrame: {fileID: 600671646}
 --- !u!4 &265979097
