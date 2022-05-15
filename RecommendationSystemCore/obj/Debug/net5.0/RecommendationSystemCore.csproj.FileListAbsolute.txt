@@ -190,3 +190,4 @@ C:\Users\DogNellaf\Desktop\Программирование\RecomendationSystem\
 C:\Users\DogNellaf\Desktop\Программирование\RecomendationSystem\RecommendationSystemCore\obj\Debug\net5.0\ref\RecommendationSystemCore.dll
 C:\Users\DogNellaf\Desktop\Программирование\RecomendationSystem\RecommendationSystemCore\obj\Debug\net5.0\RecommendationSystemCore.pdb
 C:\Users\DogNellaf\Desktop\Программирование\RecomendationSystem\RecommendationSystemCore\obj\Debug\net5.0\RecommendationSystemCore.genruntimeconfig.cache
+C:\Users\DogNellaf\Desktop\Программирование\RecomendationSystem\RecommendationSystemCore\bin\Debug\net5.0\RecomendationSystemClasses.pdb

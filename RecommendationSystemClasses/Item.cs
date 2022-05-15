@@ -12,6 +12,16 @@ namespace RecommendationSystem.Models
         private string photo;
         private string description;
         private int typeId;
+        private bool edibility;
+        private double average_price;
+        private bool with_sugar;
+        private bool hypoallergenic;
+        private bool eco_friendly;
+        private bool import;
+        private bool antibacterial;
+        private bool non_gmo;
+        private bool vegan;
+        private bool lean;
 
         #endregion
 
@@ -28,6 +38,17 @@ namespace RecommendationSystem.Models
 
         //тип продукта
         public int TypeId { get => typeId; }
+
+        private bool IsEdibility { get => edibility; }
+        private float AveragePrice { get => average_price; }
+        private bool IsWithSugar { get => with_sugar; }
+        private bool IsHypoallergenic { get => hypoallergenic; }
+        private bool EcoFriendly { get => eco_friendly; }
+        private bool IsImport { get => import; }
+        private bool IsAntibacterial { get => antibacterial; }
+        private bool IsNonGMO { get => non_gmo; }
+        private bool IsVegan { get => vegan; }
+        private bool IsLean { get => lean; }
 
         #endregion
 
@@ -53,6 +74,16 @@ namespace RecommendationSystem.Models
             SetProperty(ref photo, items[2]);
             SetProperty(ref description, items[3]);
             SetProperty(ref typeId, items[4]);
+            SetProperty(ref edibility, items[5]);
+            SetProperty(ref average_price, items[6]);
+            SetProperty(ref with_sugar, items[7]);
+            SetProperty(ref hypoallergenic, items[8]);
+            SetProperty(ref eco_friendly, items[9]);
+            SetProperty(ref import, items[10]);
+            SetProperty(ref antibacterial, items[11]);
+            SetProperty(ref non_gmo, items[12]);
+            SetProperty(ref vegan, items[13]);
+            SetProperty(ref lean, items[14]);
         }
 
         public Item(dynamic objects)
@@ -61,6 +92,10 @@ namespace RecommendationSystem.Models
             this.name = objects["Name"].ToObject<string>();
             this.photo = objects["Photo"].ToObject<string>();
             this.typeId = objects["TypeId"].ToObject<int>();
+            this.edibility = objects["Edibility"].ToObject<bool>();
+            this.average_price = objects["AveragePrice"].ToObject<bool>();
+            this.with_sugar = objects["IsWithSugar"].ToObject<bool>();
+            this.edibility = objects["edibility"].ToObject<bool>();
             try
             {
                 this.description = objects["Description"].ToObject<string>();

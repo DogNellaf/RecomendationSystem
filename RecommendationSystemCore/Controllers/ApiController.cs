@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using RecommendationSystem.Core.Helpers;
 using RecommendationSystem.Models;
+using RecommendationSystem.Neural;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -55,6 +56,50 @@ namespace RecommendationSystem.Controllers
             return Redirect("api/error?message=user doesn't exists");
         }
 
+        [HttpGet("api/getrecommend")] // получить рекомендацию по пользователю /api/getrecommend/?user_id=<type_id>
+        public IActionResult GetRecommend(string user_id)
+        {
+            var reviews = Database.GetObject<Review>($"[user_id] = {user_id}").Where(x => x.Rating == 4 || x.Rating == 5);
+            foreach (Review review in reviews)
+            {
+                Topology topology = new Topology(11, 1, 4);
+                NeuronNetwork network = new NeuronNetwork(topology);
+
+                var item = review.GetItem(Database.GetObject<Item>());
+                List<double> signals = GetSignals(item);
+
+                network.FeedForward(signals);
+            }
+
+            var outputItems = new List<Item>();
+            var items = Database.GetObject<Item>();
+            foreach (Item item in items)
+            {
+                Topology topology = new Topology(11, 1, 4);
+                NeuronNetwork network = new NeuronNetwork(topology);
+
+                List<double> signals = GetSignals(item);
+
+                var neuron = network.FeedForward(signals);
+                //TODO: откорректировать вес
+                if (neuron.Output > 0.5)
+                {
+                    outputItems.Add(item);
+                }
+            }
+
+            return Ok(outputItems);
+        }
+
+        private List<double> GetSignals(Item item)
+        {
+            //TODO: обновить библиотеку и подключить все свойства
+            return new List<double>
+            {
+                item.TypeId
+            };
+        }
+
         [HttpGet] // получить список типов продуктов, путь /api/types
         public IActionResult Types() => Ok<Models.Type>();
 
@@ -69,7 +114,6 @@ namespace RecommendationSystem.Controllers
 
         [HttpGet] // получить список отзывов по продукту /api/reviewsbyitem/?item_id=<type_id>
         public IActionResult ReviewsByItem(string item_id) => Ok<Review>($"[item_id] = {item_id}");
-
 
         [HttpGet] // получить пользователя по имени /api/getuserbyname?name=<имя>
         public IActionResult GetUserByName(string name) => Ok<User>($"[username] = '{name}'");

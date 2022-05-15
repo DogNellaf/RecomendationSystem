@@ -39,6 +39,22 @@ namespace RecommendationSystem.Models
             }
         }
 
+        protected void SetProperty(ref bool property, object value)
+        {
+            if (value is not DBNull)
+            {
+                property = (bool)value;
+            }
+        }
+
+        protected void SetProperty(ref float property, object value)
+        {
+            if (value is not DBNull)
+            {
+                property = (double)value;
+            }
+        }
+
 
         #endregion
     }
