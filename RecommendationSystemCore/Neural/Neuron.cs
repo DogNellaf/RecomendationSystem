@@ -41,6 +41,14 @@ namespace RecommendationSystem.Neural
             return Output;
         }
 
+        public void SetWeights(params double[] weights)
+        {
+            for (int i = 0; i < weights.Length; i++)
+            {
+                Weights[i] = weights[i];
+            }
+        }
+
         public override string ToString() => $"{Output}";
     }
 }
