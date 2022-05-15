@@ -9,7 +9,7 @@ namespace RecommendationSystem.Neural
     public class Neuron
     {
         // веса, входящие в нейрон
-        public List<double> Weight { get; }
+        public List<double> Weights { get; }
 
         // тип нейрона
         public NeuronType NeuronType { get; }
@@ -19,7 +19,28 @@ namespace RecommendationSystem.Neural
 
         public Neuron(int inputCount, NeuronType type = NeuronType.Hidden)
         {
+            NeuronType = type;
+            Weights = new List<double>(inputCount);
 
+            for (int i = 0; i < inputCount; i++)
+            {
+                Weights.Add(1);
+            }
         }
+
+        private double Sigma(double x) => 1 / (1 - Math.Pow(Math.E, -x));
+
+        public double FeedForward(List<double> inputs)
+        {
+            double sum = 0;
+            for (int i = 0; i < inputs.Count; i++)
+            {
+                sum += inputs[i] * Weights[i];
+            }
+            Output = Sigma(sum);
+            return Output;
+        }
+
+        public override string ToString() => $"{Output}";
     }
 }
