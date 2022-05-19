@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -39,7 +38,7 @@ public class Database: MonoBehaviour
     //[SerializeField] private bool isConnected = true;
 
     // включена ли отладка
-    [SerializeField] private bool isDebug = true;
+    [SerializeField] public bool isDebug = true;
 
     // страница, выводимая при отсутствии подключения
     [SerializeField] private GameObject noConnectionFrame;
@@ -115,6 +114,8 @@ public class Database: MonoBehaviour
             request.UserAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US) AppleWebKit/532.5 (KHTML, like Gecko) Chrome/4.0.249.89 Safari/532.5";
             request.Timeout = 5000;
 
+
+
             // получаем ответ
             HttpWebResponse resp = request.GetResponse() as HttpWebResponse;
             string text = "";
@@ -138,7 +139,7 @@ public class Database: MonoBehaviour
 
             // кидаем ошибку
 
-            throw new Exception($"Не удалось считать по пути '{path}', причина: '{ex.Message}'");
+            throw new Exception($"Не удалось считать по пути '{path}', причина: '{ex.Message}, {ex.StackTrace}'");
         }
     }
 

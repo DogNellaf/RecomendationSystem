@@ -61,38 +61,45 @@ namespace RecommendationSystem.Controllers
         public IActionResult GetRecommend(string user_id)
         {
             var reviews = Database.GetObject<Review>($"[user_id] = {user_id}").Where(x => x.Rating == 4 || x.Rating == 5);
-            Topology topology = new(11, 1, 4);
-            NeuronNetwork network = new(topology);
-
-            var items = Database.GetObject<Item>();
-            var maxAveragePrice = reviews.Select(x => x.GetItem(items)).Average(x => x.AveragePrice);
-            var maxTypeId = reviews.Select(x => x.GetItem(items)).Average(x => x.TypeId) * 0.4;
-
-            foreach (Review review in reviews)
+            if (reviews.Any())
             {
-                var item = review.GetItem(Database.GetObject<Item>());
-                List<double> signals = GetSignals(item, maxAveragePrice, maxTypeId);
+                Topology topology = new(11, 1, 4);
+                NeuronNetwork network = new(topology);
 
-                network.FeedForward(signals);
-            }
+                var items = Database.GetObject<Item>();
+                var maxAveragePrice = reviews.Select(x => x.GetItem(items)).Average(x => x.AveragePrice);
+                var maxTypeId = reviews.Select(x => x.GetItem(items)).Average(x => x.TypeId) * 0.4;
 
-            var outputItems = new List<Item>();
-
-            foreach (Item item in items)
-            {
-                var networkCopy = network.Clone() as NeuronNetwork;
-
-                List<double> signals = GetSignals(item, maxAveragePrice, maxTypeId);
-
-                var neuron = networkCopy.FeedForward(signals);
-                //TODO: откорректировать вес
-                if (neuron.Output < neuralOutputLimit)
+                foreach (Review review in reviews)
                 {
-                    outputItems.Add(item);
-                }
-            }
+                    var item = review.GetItem(Database.GetObject<Item>());
+                    List<double> signals = GetSignals(item, maxAveragePrice, maxTypeId);
 
-            return Ok(Database.GetJson(outputItems));
+                    network.FeedForward(signals);
+                }
+
+                var outputItems = new List<Item>();
+
+                foreach (Item item in items)
+                {
+                    var networkCopy = network.Clone() as NeuronNetwork;
+
+                    List<double> signals = GetSignals(item, maxAveragePrice, maxTypeId);
+
+                    var neuron = networkCopy.FeedForward(signals);
+                    //TODO: откорректировать вес
+                    if (neuron.Output < neuralOutputLimit)
+                    {
+                        outputItems.Add(item);
+                    }
+                }
+
+                return Ok(Database.GetJson(outputItems));
+            }
+            else
+            {
+                return Ok(new List<Item>());
+            }
         }
 
         [HttpGet] // получить список типов продуктов, путь /api/types

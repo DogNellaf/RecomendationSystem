@@ -8,8 +8,9 @@ public class LeftFrameGenerator : MonoBehaviour
     private void Start()
     {
         var database = MenuInteractions.Current.Database;
-
+        Debug.Log("database");
         var types = database.Types;
+        Debug.Log("types");
         var position = 550;
         foreach (Type type in types)
         {

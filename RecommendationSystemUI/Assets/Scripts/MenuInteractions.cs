@@ -12,6 +12,9 @@ public class MenuInteractions : MonoBehaviour
     //логическая переменная для переключения состояния панели
     [SerializeField] private bool leftFrameIsOpened = false;
 
+    //скорость движения панели
+    [SerializeField] private float speed = 0.06f;
+
     //свойство для быстрого получения позиции по х для левой менюшки
     private float leftFrameXPosition => leftFrame.transform.position.x;
 
@@ -62,7 +65,7 @@ public class MenuInteractions : MonoBehaviour
     {
         while (leftFrameXPosition < -0.04)
         {
-            leftFrame.transform.position = new Vector3(leftFrame.transform.position.x + 0.06f, leftFrame.transform.position.y, leftFrame.transform.position.z);
+            leftFrame.transform.position = new Vector3(leftFrame.transform.position.x + speed, leftFrame.transform.position.y, leftFrame.transform.position.z);
             yield return new WaitForSeconds(0.001f);
         }
         onButtonClicked = false;
@@ -73,7 +76,7 @@ public class MenuInteractions : MonoBehaviour
     {
         while (leftFrameXPosition > -5.6)
         {
-            leftFrame.transform.position = new Vector3(leftFrame.transform.position.x - 0.06f, leftFrame.transform.position.y, leftFrame.transform.position.z);
+            leftFrame.transform.position = new Vector3(leftFrame.transform.position.x - speed, leftFrame.transform.position.y, leftFrame.transform.position.z);
             yield return new WaitForSeconds(0.001f);
         }
         onButtonClicked = false;
