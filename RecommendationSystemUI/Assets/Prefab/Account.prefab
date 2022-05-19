@@ -758,7 +758,7 @@ GameObject:
   - component: {fileID: 4387126927951437889}
   - component: {fileID: 2642385999717353828}
   - component: {fileID: 3851889815885057318}
-  - component: {fileID: 7510550193062724942}
+  - component: {fileID: 1640656577950946700}
   m_Layer: 5
   m_Name: ReviewsButton
   m_TagString: Untagged
@@ -869,9 +869,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7510550193062724942}
-        m_TargetAssemblyTypeName: ReviewShower, Assembly-CSharp
-        m_MethodName: ShowReviews
+      - m_Target: {fileID: 1640656577950946700}
+        m_TargetAssemblyTypeName: TypeButtonClick, Assembly-CSharp
+        m_MethodName: OnClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -881,7 +881,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &7510550193062724942
+--- !u!114 &1640656577950946700
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -890,10 +890,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 7175806704484716743}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc951fea7fdccdc4e81d60c891b2752f, type: 3}
+  m_Script: {fileID: 11500000, guid: 49147db0d9dea97409e2cf27809736fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ReviewPage: {fileID: 1198672128516509165, guid: 79ffc65f66d7916468dfd3f0236a98b1, type: 3}
+  typeId: 0
+  itemButtonPrefab: {fileID: 7135304062063256444, guid: d79795a6e96c685408fc85b042755377, type: 3}
+  itemsFromRecommendation: 1
+  menu: {fileID: 0}
 --- !u!1 &7220582622509603112
 GameObject:
   m_ObjectHideFlags: 0

@@ -24,8 +24,10 @@ namespace RecommendationSystem.Core.Helpers
             List<T> objects = GetObject<T>(where);
 
             // конвертируем в JSON и отправляем пользователю
-            return JsonConvert.SerializeObject(objects);
+            return GetJson(objects);
         }
+
+        internal static string GetJson<T>(List<T> elements) where T: Model => JsonConvert.SerializeObject(elements);
 
         //функция получения объектов из базы, где Т - любой наследник класса Model
         internal static List<T> GetObject<T>(string where = "") where T : Model

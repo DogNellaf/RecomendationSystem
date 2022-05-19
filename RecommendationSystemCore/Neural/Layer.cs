@@ -1,9 +1,10 @@
 ﻿using RecommendationSystem.Neural;
+using System;
 using System.Collections.Generic;
 
 namespace RecommendationSystem.Neural
 {
-    public class Layer
+    public class Layer: ICloneable
     {
         public List<Neuron> Neurons { get; }
         public int Count => Neurons?.Count ?? 0;
@@ -29,6 +30,18 @@ namespace RecommendationSystem.Neural
                 result.Add(neuron.Output);
             }
             return result;
+        }
+
+        public object Clone()
+        {
+            var neurons = new List<Neuron>();
+            foreach (Neuron oldNeuron in Neurons)
+            {
+                var neuron = oldNeuron.Clone() as Neuron;
+                neurons.Add(neuron);
+            }
+
+            return new Layer(neurons, neurons[0].NeuronType);
         }
     }
 }

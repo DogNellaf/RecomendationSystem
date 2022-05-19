@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace RecommendationSystem.Neural
 {
     // класс, описывающий один нейрон сети
-    public class Neuron
+    public class Neuron: ICloneable
     {
         // веса, входящие в нейрон
         public List<double> Weights { get; }
@@ -24,7 +22,8 @@ namespace RecommendationSystem.Neural
 
             for (int i = 0; i < inputCount; i++)
             {
-                Weights.Add(1);
+                //Weights.Add(rnd.NextDouble());
+                Weights.Add(0.3);
             }
         }
 
@@ -37,7 +36,17 @@ namespace RecommendationSystem.Neural
             {
                 sum += inputs[i] * Weights[i];
             }
-            Output = Sigma(sum);
+
+            if (NeuronType == NeuronType.Input)
+            {
+                Output = sum;
+            }
+            else
+            {
+                var sigma = Sigma(sum);
+                Output = double.IsInfinity(sigma) ? 0 : sigma;
+                
+            }
             return Output;
         }
 
@@ -50,5 +59,12 @@ namespace RecommendationSystem.Neural
         }
 
         public override string ToString() => $"{Output}";
+
+        public object Clone()
+        {
+            var neuron = new Neuron(Weights.Count, NeuronType);
+            neuron.SetWeights(Weights.ToArray());
+            return neuron;
+        }
     }
 }

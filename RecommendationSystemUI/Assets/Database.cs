@@ -19,7 +19,7 @@ public class Database: MonoBehaviour
 
     [SerializeField] private string internetHost = @"http://u1674941.plsk.regruhosting.ru";
 
-    [SerializeField] private bool isLocal = true;
+    [SerializeField] private bool isLocal = false;
 
     private string host = "";
 
@@ -52,6 +52,9 @@ public class Database: MonoBehaviour
 
     // список продуктов по типу
     public List<Item> GetItemsByType(int typeId) => GetObjects<Item>($"itemsbytype/?type_id={typeId}");
+
+    // список продуктов из рекомендации по пользователю
+    public List<Item> GetItemsByUser(int userId) => GetObjects<Item>($"getrecommend?user_id={userId}");
 
     // список отзывов по продукту
     public List<Review> GetReviewsByItem(Item item) => GetObjects<Review>($"reviewsbyitem/?item_id={item.Id}");

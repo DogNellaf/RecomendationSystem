@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -18,6 +17,8 @@ namespace RecommendationSystem.Controllers
     // API контроллер 
     public class ApiController : Controller
     {
+        // порог подходящего продукта
+        private double neuralOutputLimit = 2.5;
 
         #region API Methods
 
@@ -60,44 +61,38 @@ namespace RecommendationSystem.Controllers
         public IActionResult GetRecommend(string user_id)
         {
             var reviews = Database.GetObject<Review>($"[user_id] = {user_id}").Where(x => x.Rating == 4 || x.Rating == 5);
+            Topology topology = new(11, 1, 4);
+            NeuronNetwork network = new(topology);
+
+            var items = Database.GetObject<Item>();
+            var maxAveragePrice = reviews.Select(x => x.GetItem(items)).Average(x => x.AveragePrice);
+            var maxTypeId = reviews.Select(x => x.GetItem(items)).Average(x => x.TypeId) * 0.4;
+
             foreach (Review review in reviews)
             {
-                Topology topology = new Topology(11, 1, 4);
-                NeuronNetwork network = new NeuronNetwork(topology);
-
                 var item = review.GetItem(Database.GetObject<Item>());
-                List<double> signals = GetSignals(item);
+                List<double> signals = GetSignals(item, maxAveragePrice, maxTypeId);
 
                 network.FeedForward(signals);
             }
 
             var outputItems = new List<Item>();
-            var items = Database.GetObject<Item>();
+
             foreach (Item item in items)
             {
-                Topology topology = new Topology(11, 1, 4);
-                NeuronNetwork network = new NeuronNetwork(topology);
+                var networkCopy = network.Clone() as NeuronNetwork;
 
-                List<double> signals = GetSignals(item);
+                List<double> signals = GetSignals(item, maxAveragePrice, maxTypeId);
 
-                var neuron = network.FeedForward(signals);
+                var neuron = networkCopy.FeedForward(signals);
                 //TODO: откорректировать вес
-                if (neuron.Output > 0.5)
+                if (neuron.Output < neuralOutputLimit)
                 {
                     outputItems.Add(item);
                 }
             }
 
-            return Ok(outputItems);
-        }
-
-        private List<double> GetSignals(Item item)
-        {
-            //TODO: обновить библиотеку и подключить все свойства
-            return new List<double>
-            {
-                item.TypeId
-            };
+            return Ok(Database.GetJson(outputItems));
         }
 
         [HttpGet] // получить список типов продуктов, путь /api/types
@@ -231,6 +226,35 @@ namespace RecommendationSystem.Controllers
 
         // вспомогательный метод для сокращения
         private ActionResult Ok<T>(string where = "") where T: Model => Ok(Database.GetJson<T>(where));
+
+        // конвертация bool в int
+        private static int ToInt(bool value)
+        {
+            return value switch
+            {
+                true => 1,
+                _ => 0,
+            };
+        }
+
+        // получение входных сигналов для нейронки
+        private static List<double> GetSignals(Item item, double averagePrice, double maxTypeId)
+        {
+            return new List<double>
+            {
+                //item.TypeId * maxTypeId,
+                ToInt(item.IsEdibility),
+                item.AveragePrice / averagePrice,
+                ToInt(item.IsWithSugar),
+                ToInt(item.IsHypoallergenic),
+                ToInt(item.EcoFriendly),
+                ToInt(item.IsImport),
+                ToInt(item.IsAntibacterial),
+                ToInt(item.IsNonGMO),
+                ToInt(item.IsVegan),
+                ToInt(item.IsLean)
+            };
+        }
 
         // функция формирования хэша
         public static string Encrypt(string value)

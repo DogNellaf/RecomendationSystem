@@ -47,7 +47,7 @@ namespace RecommendationSystem.Models
             }
         }
 
-        protected void SetProperty(ref float property, object value)
+        protected void SetProperty(ref double property, object value)
         {
             if (value is not DBNull)
             {

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace RecommendationSystem.Neural
 {
-    public class Topology
+    public class Topology: ICloneable
     {
         public int InputCount { get; }
         public int OutputCount { get; }
@@ -16,6 +16,13 @@ namespace RecommendationSystem.Neural
             OutputCount = outputCount;
             HiddenLayers = new List<int>();
             HiddenLayers.AddRange(layers);
+        }
+
+        public object Clone()
+        {
+            int[] list = new int[HiddenLayers.Count];
+            HiddenLayers.CopyTo(list);
+            return new Topology(InputCount, OutputCount, list);
         }
     }
 }

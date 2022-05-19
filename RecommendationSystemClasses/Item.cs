@@ -39,16 +39,16 @@ namespace RecommendationSystem.Models
         //тип продукта
         public int TypeId { get => typeId; }
 
-        private bool IsEdibility { get => edibility; }
-        private float AveragePrice { get => average_price; }
-        private bool IsWithSugar { get => with_sugar; }
-        private bool IsHypoallergenic { get => hypoallergenic; }
-        private bool EcoFriendly { get => eco_friendly; }
-        private bool IsImport { get => import; }
-        private bool IsAntibacterial { get => antibacterial; }
-        private bool IsNonGMO { get => non_gmo; }
-        private bool IsVegan { get => vegan; }
-        private bool IsLean { get => lean; }
+        public bool IsEdibility { get => edibility; }
+        public double AveragePrice { get => average_price; }
+        public bool IsWithSugar { get => with_sugar; }
+        public bool IsHypoallergenic { get => hypoallergenic; }
+        public bool EcoFriendly { get => eco_friendly; }
+        public bool IsImport { get => import; }
+        public bool IsAntibacterial { get => antibacterial; }
+        public bool IsNonGMO { get => non_gmo; }
+        public bool IsVegan { get => vegan; }
+        public bool IsLean { get => lean; }
 
         #endregion
 

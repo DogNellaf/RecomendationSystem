@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace RecommendationSystem.Neural
 {
-    public class NeuronNetwork
+    public class NeuronNetwork: ICloneable
     {
         public Topology Topology { get; }
-        public List<Layer> Layers { get; }
+        public List<Layer> Layers { get; set; }
         public NeuronNetwork(Topology topology)
         {
             Topology = topology;
@@ -19,8 +19,6 @@ namespace RecommendationSystem.Neural
             CreateInputLayer();
             CreateHiddenLayer();
             CreateOutputLayer();
-
-            
         }
 
         public Neuron FeedForward(List<double> inputSignals)
@@ -101,6 +99,19 @@ namespace RecommendationSystem.Neural
             }
             var layer = new Layer(neurons, NeuronType.Input);
             Layers.Add(layer);
+        }
+
+        public object Clone()
+        {
+            var topology = Topology.Clone() as Topology;
+            var network = new NeuronNetwork(topology);
+            var layers = new List<Layer>();
+            foreach (Layer layer in Layers)
+            {
+                layers.Add(layer.Clone() as Layer);
+            }
+            network.Layers = layers;
+            return network;
         }
     }
 }
