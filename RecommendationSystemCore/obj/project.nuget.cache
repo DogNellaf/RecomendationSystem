@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "+dz83gKkEULnSdBzcRJKUeGUy0+XxIlXR9co/uRAB98ERhU1mZaQAeaUp1sjvPQYnyQ0+PYMITV+8vO8dA0KUw==",
+  "dgSpecHash": "oRPc+LOkPemxTMdoVHzOKPClPQS7nL/Eh5q4HrBdYLXKb+BJ2DCz4hfUDN3/5f2yOxh0Bp/3wBAhcFcJ7I7mcw==",
   "success": true,
   "projectFilePath": "G:\\Projects\\RecomendationSystem\\RecommendationSystemCore\\RecommendationSystemCore.csproj",
   "expectedPackageFiles": [
@@ -49,7 +49,7 @@
     "C:\\Users\\Данилидзе\\.nuget\\packages\\system.threading.tasks\\4.3.0\\system.threading.tasks.4.3.0.nupkg.sha512",
     "C:\\Users\\Данилидзе\\.nuget\\packages\\system.threading.tasks.extensions\\4.5.2\\system.threading.tasks.extensions.4.5.2.nupkg.sha512",
     "C:\\Users\\Данилидзе\\.nuget\\packages\\system.windows.extensions\\5.0.0\\system.windows.extensions.5.0.0.nupkg.sha512",
-    "C:\\Users\\Данилидзе\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\5.0.16\\microsoft.netcore.app.host.win-x64.5.0.16.nupkg.sha512"
+    "C:\\Users\\Данилидзе\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\5.0.17\\microsoft.netcore.app.host.win-x64.5.0.17.nupkg.sha512"
   ],
   "logs": []
 }
