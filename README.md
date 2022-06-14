@@ -36,4 +36,4 @@ We support a collection of templates, organized in this way:
 
 ## License
 
-[CC BY-NC](./LICENSE).
+[CC BY-NC 4.0](./LICENSE).
