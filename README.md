@@ -1,4 +1,4 @@
-# Neural Recommendation Application (Android UI + Server on Windows)
+# Neural Recommendation Application
 
 This is the Neural Recommendation System. 
 The system provides product recommendations for each user based on their previous reviews, 
